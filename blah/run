@@ -1,0 +1,3 @@
+#!/usr/bin/env bash 
+# shebang
+exec python $(dirname $0)/${STEP:-stepA_mal}.py "${@}"

@@ -83,7 +83,7 @@ IMPLS = ada awk bash basic c chuck clojure coffee common-lisp cpp crystal cs d d
 	guile haskell haxe hy io java js julia kotlin livescript logo lua make mal \
 	matlab miniMAL nasm nim objc objpascal ocaml perl perl6 php picolisp plpgsql \
 	plsql powershell ps python r racket rexx rpython ruby rust scala scheme skew \
-	swift swift3 tcl ts vb vhdl vimscript yorick
+	swift swift3 tcl ts vb vhdl vimscript yorick blah
 
 EXTENSION = .mal
 
@@ -148,6 +148,7 @@ endif
 #
 # Implementation specific utility functions
 #
+blah_STEP_TO_PROG = blah/$($(1)).py
 
 basic_STEP_TO_PROG_cbm    = basic/$($(1)).bas
 basic_STEP_TO_PROG_qbasic = basic/$($(1))
