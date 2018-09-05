@@ -1,5 +1,6 @@
 import re
 from data_types import *
+
 class Reader:
     def __init__(self, tokens):
         self.tokens = tokens
@@ -12,6 +13,7 @@ class Reader:
         result = self.tokens[self.pos]
         self.pos += 1
         return result
+
 
 def read_str(string):
 
@@ -60,7 +62,7 @@ def read_atom(reader):
 
     content = reader.next()
         
-    if content.isnumeric():
+    if content.isnumeric() or (content[0] == '-' and content[1:].isnumeric()):
         return Integer(content)
     else:
         return Symbol(content)
