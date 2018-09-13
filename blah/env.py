@@ -1,7 +1,16 @@
+from data_types import Symbol
+
 class Env:
-    def __init__(self, outer):
+    def __init__(self, outer, binds=None, exprs=None):
         self.outer = outer
         self.data = {}
+        if binds and exprs:
+            for i, (bind, expr) in enumerate(zip(binds, exprs)):
+                if bind == Symbol("&"):
+                    self.set(binds[i + 1].name, exprs[i:])
+                    break
+                else:
+                    self.set(bind.name, expr)
 
     def set(self, key, value):
         self.data[key] = value

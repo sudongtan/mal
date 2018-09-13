@@ -49,8 +49,8 @@ def read_list(reader):
     while reader.peek() != ')':
         token = read_form(reader)
         # TODO: handle EOF gracefully
-        if token == '':
-            raise EOFError
+        #if token == '':
+        #    raise EOFError(f"last token {token}")
         result.append(token)
     
     # throw last ")" away
@@ -61,8 +61,12 @@ def read_list(reader):
 def read_atom(reader):
 
     content = reader.next()
-        
-    if content.isnumeric() or (content[0] == '-' and content[1:].isnumeric()):
+    
+    if content == 'nil':
+        return Nil()
+    elif content in ['true', 'false']:
+        return Bool(content)
+    elif content.isnumeric() or (content[0] == '-' and content[1:].isnumeric()):
         return Integer(content)
     else:
         return Symbol(content)
