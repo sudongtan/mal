@@ -2,7 +2,7 @@ from data_types import *
 import types
 
 
-def pr_str(ds):
+def pr_str(ds, print_readably=True):
     if isinstance(ds, list):
         return f"({' '.join(pr_str(d) for d in ds)})"
     elif isinstance(ds, types.FunctionType):

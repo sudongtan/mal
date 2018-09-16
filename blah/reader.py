@@ -68,6 +68,9 @@ def read_atom(reader):
         return Bool(content)
     elif content.isnumeric() or (content[0] == '-' and content[1:].isnumeric()):
         return Integer(content)
+
+    elif content.startswith('"') and content.endswith('"'):
+        return String(content)
     else:
         return Symbol(content)
 
