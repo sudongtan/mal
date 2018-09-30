@@ -36,8 +36,6 @@ def EVAL(ast, env):
                     result = EVAL(expr, env_let)
 
                 elif ast[0].name == 'do':
-                    #for i in ast[1:]:
-                    #    result = eval_ast(i, env)
                     result = eval_ast(ast[1:], env)[-1]
                     
                 elif ast[0].name == 'if':
