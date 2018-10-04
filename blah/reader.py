@@ -26,7 +26,7 @@ def read_str(string):
 
 def tokenizer(string):
 
-    pcre = '''[\s,]*(~@|[\[\]{}()'`~^@]|"(?:\\.|[^\\"])*"|;.*|[^\s\[\]{}('"`,;)]*)'''
+    pcre = r'''[\s,]*(~@|[\[\]{}()'`~^@]|"(?:\\.|[^\\"])*"|;.*|[^\s\[\]{}('"`,;)]*)'''
     result = re.findall(pcre, string)
 
     return result
@@ -70,7 +70,38 @@ def read_atom(reader):
         return Integer(content)
 
     elif content.startswith('"') and content.endswith('"'):
-        return String(content)
+        #print("check quotation: ", content)
+        # map ex
+        # reps = [
+        #     (r'\"', '"'),
+        #     ('\\n', '\n'),
+        #     ('\\\\', '\\'),
+        # ]
+        s = content[1:-1]
+        chars = []
+        skip = False
+        for a, b in zip(s[:-1], s[1:]):
+            if skip:
+                skip = False
+                continue
+            if a == '\\':
+                if b == 'n':
+                    chars.append('\n')
+                    skip = True
+                elif b == '\\':
+                    chars.append('\\')
+                    skip = True
+                elif b == '"':
+                    chars.append('"')
+                    skip = True
+            else:
+                chars.append(a)
+        if s and not skip:
+            chars.append(s[-1])
+        # s = content[1:-1]
+        # for orig, new in reps:
+        #     s = s.replace(orig, new)
+        return String(''.join(chars))
     else:
         return Symbol(content)
 

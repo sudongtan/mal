@@ -27,7 +27,7 @@ ns = {
     '>': lambda a, b: Bool('true') if a > b else Bool('false'),
     '>=': lambda a, b: Bool('true') if (a == b) or (a > b) else Bool('false'),
     '<=': lambda a, b: Bool('true') if (a == b) or (a < b) else Bool('false'),
-    'pr-str': lambda *args: " ".join(pr_str(arg, print_readably=True) for arg in args),
+    'pr-str': lambda *args: " ".join(pr_str(arg, print_readably=True) for arg in args) or '""',
     'str': lambda *args: "".join(pr_str(arg, print_readably=False) for arg in args),
     'prn': prn,
     'println': println,
