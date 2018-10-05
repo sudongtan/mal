@@ -70,13 +70,6 @@ def read_atom(reader):
         return Integer(content)
 
     elif content.startswith('"') and content.endswith('"'):
-        #print("check quotation: ", content)
-        # map ex
-        # reps = [
-        #     (r'\"', '"'),
-        #     ('\\n', '\n'),
-        #     ('\\\\', '\\'),
-        # ]
         s = content[1:-1]
         chars = []
         skip = False
@@ -98,9 +91,6 @@ def read_atom(reader):
                 chars.append(a)
         if s and not skip:
             chars.append(s[-1])
-        # s = content[1:-1]
-        # for orig, new in reps:
-        #     s = s.replace(orig, new)
         return String(''.join(chars))
     else:
         return Symbol(content)

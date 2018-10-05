@@ -5,13 +5,12 @@ from env import Env
 import core
 
 
-
 repl_env = Env(None)
-
 
 
 def READ(x):
     return reader.read_str(x)
+
 
 def EVAL(ast, env):
 
@@ -109,4 +108,3 @@ if __name__ == "__main__":
         repl_env.set(key, value)
     rep("(def! not (fn* (a) (if a false true)))", repl_env)
     loop()
-    
