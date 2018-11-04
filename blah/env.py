@@ -6,12 +6,13 @@ class Env:
         self.outer = outer
         self.data = {}
         if binds:
-            for i, (bind, expr) in enumerate(zip_longest(binds, exprs)):
+            # print('binds', binds, 'exprs', exprs)
+            for i, bind in enumerate(binds):
                 if bind == Symbol("&"):
                     self.set(binds[i + 1].name, list(exprs[i:]))
                     break
                 else:
-                    self.set(bind.name, expr)
+                    self.set(bind.name, exprs[i])
 
     def set(self, key, value):
         #print(key, value, type(value))
@@ -38,4 +39,5 @@ class Env:
             raise KeyError(f"'{key}' not found")
 
     def __repr__(self):
-        return f"{type(self).__name__}({self.data}, outer={self.outer})"
+        #return f"{type(self).__name__}({list(self.data)}, outer={self.outer})"
+        return f"{type(self).__name__}(..., outer={self.outer})"

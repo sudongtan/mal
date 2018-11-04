@@ -12,10 +12,12 @@ def println(*args):
     print(" ".join(pr_str(arg, print_readably=False) for arg in args))
     return Nil()
 
+def minus(a, b):
+    return a - b
 
 ns = {
     '+': lambda a, b: a + b,
-    '-': lambda a, b: a - b,
+    '-': minus,
     '*': lambda a, b: a * b,
     '/': lambda a, b: a / b,
     'list': ls,
