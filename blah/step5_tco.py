@@ -7,8 +7,7 @@ from env import Env
 import core
 
 
-
-class FnResult(namedtuple('FnResult', ["ast", "params", "env", "fn"])):
+class Func(namedtuple('Func', ["ast", "params", "env", "fn"])):
     def __repr__(self):
         inside = '\n  '.join(f'{k}={v}' for k, v in self._asdict().items())
         return f"{type(self).__name__}(\n  {inside})"
@@ -28,23 +27,15 @@ def EVAL(ast, env):
         if not ast:
             return ast
 
-        if not isinstance(ast[0], Symbol):
-            fun, *param_values = eval_ast(ast, env)
-            if isinstance(fun, FnResult):
-                new_env = Env(fun.env, fun.params, param_values)
-                ast = fun.ast
-                env = new_env
-                continue
-            else:
-                result = fun(*param_values)
+        name = getattr(ast[0], 'name', None)
 
-        if ast[0].name == 'def!':
+        if name == 'def!':
             _, key, value = ast
             evaluated = EVAL(value, env)
             env.set(key.name, evaluated)
             result = env.get(key.name)
 
-        elif ast[0].name == 'let*':
+        elif name == 'let*':
             _, bindings, expr = ast
             env_let = Env(env)
             for symbol, value in zip(bindings[:-1:2], bindings[1::2]):
@@ -57,13 +48,13 @@ def EVAL(ast, env):
             ast = expr
             continue
             
-        elif ast[0].name == 'do':
+        elif name == 'do':
             #result = eval_ast(ast[1:], env)[-1]
             result = eval_ast(ast[1:-1], env)[-1]
             ast = ast[-1]
             continue
             
-        elif ast[0].name == 'if':
+        elif name == 'if':
             _, condition, *branches = ast
             evaluated_condition = EVAL(condition, env)
             if evaluated_condition not in [Nil(), Bool('false')]:
@@ -81,19 +72,19 @@ def EVAL(ast, env):
             continue
             #return result
 
-        elif ast[0].name == 'fn*':
+        elif name == 'fn*':
             _, param_names, body = ast
             def func(*param_values):
                 new_env = Env(env, param_names, param_values)
                 return EVAL(body, new_env)
-            result = FnResult(ast=body, 
-                              params=param_names, 
-                              env=env, 
-                              fn=func)
+            result = Func(ast=body, 
+                          params=param_names, 
+                          env=env, 
+                          fn=func)
 
         else:
             fun, *param_values = eval_ast(ast, env)
-            if isinstance(fun, FnResult):
+            if isinstance(fun, Func):
                 new_env = Env(fun.env, fun.params, param_values)
                 ast = fun.ast
                 env = new_env
