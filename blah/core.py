@@ -1,4 +1,5 @@
 from printer import *
+from reader import *
 
 def prn(*args):
     #print(pr_str(content, print_readably=True))
@@ -14,6 +15,10 @@ def println(*args):
 
 def minus(a, b):
     return a - b
+
+def slurp(filename):
+    with open(filename, 'r') as f:
+        return String(f.read())
 
 ns = {
     '+': lambda a, b: a + b,
@@ -33,6 +38,8 @@ ns = {
     'str': lambda *args: String("".join(pr_str(arg, print_readably=False) for arg in args)),
     'prn': prn,
     'println': println,
+    'read-string': lambda s: String(read_str(s.value)),
+    'slurp': slurp,
 }
 
 

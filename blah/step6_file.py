@@ -132,6 +132,7 @@ def eval_ast(ast, env):
 if __name__ == "__main__":
     for key, value in core.ns.items():
         repl_env.set(key, value)
+    repl_env.set('eval', lambda ast: EVAL(ast, repl_env))
     rep("(def! not (fn* (a) (if a false true)))", repl_env)
     loop()
     
