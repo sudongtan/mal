@@ -1,4 +1,5 @@
 import re
+import readline
 from data_types import *
 
 class Reader:

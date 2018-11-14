@@ -113,6 +113,8 @@ def loop():
             result = rep(x, env)
         except KeyError as exc:
             print("Error:", exc)
+        except Exception as exc:
+            print(exc)
         else:    
             print(result)
 
