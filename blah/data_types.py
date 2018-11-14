@@ -56,7 +56,7 @@ class Nil:
             return Bool('true')
         else:
             return Bool('false')
-        
+
     def __repr__(self):
         return "nil"
 
@@ -85,14 +85,16 @@ class Bool:
 #     def __init__(self)
 
 # NIL = Nil()
-# TRUE = 
+# TRUE =
 
 class String:
     def __init__(self, value):
+        if not isinstance(value, str):
+            raise TypeError(f'String expects a string. Got {type(value)}')
         self.value = value
 
     def __eq__(self, other):
         return type(self) == type(other) and self.value == other.value
-    
+
     def __repr__(self):
         return self.value

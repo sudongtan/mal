@@ -17,7 +17,7 @@ def minus(a, b):
     return a - b
 
 def slurp(filename):
-    with open(filename, 'r') as f:
+    with open(filename.value, 'r') as f:
         return String(f.read())
 
 ns = {
@@ -38,7 +38,7 @@ ns = {
     'str': lambda *args: String("".join(pr_str(arg, print_readably=False) for arg in args)),
     'prn': prn,
     'println': println,
-    'read-string': lambda s: String(read_str(s.value)),
+    'read-string': lambda s: read_str(s.value),
     'slurp': slurp,
 }
 

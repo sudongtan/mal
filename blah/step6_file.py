@@ -1,4 +1,5 @@
 from collections import namedtuple
+import traceback
 
 import reader
 import printer
@@ -113,9 +114,9 @@ def loop():
             result = rep(x, env)
         except KeyError as exc:
             print("Error:", exc)
-        except Exception as exc:
-            print(exc)
-        else:    
+        except Exception:
+            traceback.print_exc()
+        else:
             print(result)
 
 def eval_ast(ast, env):
@@ -136,5 +137,6 @@ if __name__ == "__main__":
         repl_env.set(key, value)
     repl_env.set('eval', lambda ast: EVAL(ast, repl_env))
     rep("(def! not (fn* (a) (if a false true)))", repl_env)
+    rep('(def! load-file (fn* (f) (eval (read-string (str "(do " (slurp f) ")")))))', repl_env)
     loop()
     
