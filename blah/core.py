@@ -20,6 +20,11 @@ def slurp(filename):
     with open(filename.value, 'r') as f:
         return String(f.read())
 
+def swap(atom, func, *args):
+    f = getattr(func, 'fn', func)
+    result = atom.reset(f(atom.value, *args))
+    return result
+
 ns = {
     '+': lambda a, b: a + b,
     '-': minus,
@@ -40,7 +45,15 @@ ns = {
     'println': println,
     'read-string': lambda s: read_str(s.value),
     'slurp': slurp,
+    'atom': Atom,
+    'atom?': lambda arg: Bool(str(isinstance(arg, Atom)).lower()),
+    'deref': lambda atom: atom.value,
+    'reset!': lambda atom, value: atom.reset(value),
+    'swap!': swap,
+
 }
+
+
 
 
 

@@ -50,10 +50,13 @@ def EVAL(ast, env):
             
         elif name == 'do':
             #result = eval_ast(ast[1:], env)[-1]
-            result = eval_ast(ast[1:-1], env)[-1]
+
+            if ast[1:-1]:
+                result = eval_ast(ast[1:-1], env)[-1]
+
             ast = ast[-1]
             continue
-            
+        
         elif name == 'if':
             _, condition, *branches = ast
             evaluated_condition = EVAL(condition, env)

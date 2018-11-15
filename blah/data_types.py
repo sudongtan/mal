@@ -98,3 +98,17 @@ class String:
 
     def __repr__(self):
         return self.value
+
+class Atom:
+    def __init__(self, value):
+        self.value = value
+
+    def __eq__(self, other):
+        return type(self) == type(other) and self.value == other.value
+
+    def __repr__(self):
+        return f'(atom {self.value})'
+    
+    def reset(self, new_value):
+        self.value = new_value
+        return self.value
