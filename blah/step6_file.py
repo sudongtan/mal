@@ -6,6 +6,8 @@ import printer
 from data_types import *
 from env import Env
 import core
+import sys
+
 
 
 class Func(namedtuple('Func', ["ast", "params", "env", "fn"])):
@@ -117,6 +119,8 @@ def loop():
             result = rep(x, env)
         except KeyError as exc:
             print("Error:", exc)
+        except reader.NoTokens:
+            pass
         except Exception:
             traceback.print_exc()
         else:
@@ -141,5 +145,21 @@ if __name__ == "__main__":
     repl_env.set('eval', lambda ast: EVAL(ast, repl_env))
     rep("(def! not (fn* (a) (if a false true)))", repl_env)
     rep('(def! load-file (fn* (f) (eval (read-string (str "(do " (slurp f) ")")))))', repl_env)
-    loop()
+
+    
+    if len(sys.argv) > 1:
+        filename = sys.argv[1]
+        args_idx = 2
+    else:
+        filename = None
+        args_idx = 1
+
+    args = " ".join(sys.argv[args_idx:])
+
+    rep(f'(def! *ARGV* (list {args}))', repl_env)
+
+    if filename:
+        rep(f'(load-file "{filename}")', repl_env)
+    else:
+        loop()
     

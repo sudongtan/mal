@@ -15,21 +15,25 @@ class Reader:
         self.pos += 1
         return result
 
+class NoTokens(Exception):
+    pass
 
 def read_str(string):
 
     tokens = tokenizer(string)
-    reader = Reader(tokens)
+    tokens = [s for s in tokens if not s.startswith(";")]
+    if not tokens:
+        raise NoTokens
 
+    reader = Reader(tokens)
     result = read_form(reader)
-    
+
     return result
 
 def tokenizer(string):
 
     pcre = r'''[\s,]*(~@|[\[\]{}()'`~^@]|"(?:\\.|[^\\"])*"|;.*|[^\s\[\]{}('"`,;)]*)'''
     result = re.findall(pcre, string)
-
     return result
 
 def read_form(reader):
@@ -37,6 +41,9 @@ def read_form(reader):
     first_token = reader.peek()
     if first_token == '(':
         result = read_list(reader)
+    elif first_token == '@':
+        reader.next()
+        result = [Symbol('deref'),  read_form(reader)]
     else:
         result = read_atom(reader)
     return result
